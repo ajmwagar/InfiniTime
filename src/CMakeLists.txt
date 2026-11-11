@@ -428,6 +428,8 @@ list(APPEND SOURCE_FILES
         displayapp/screens/WatchFaceMeridian.cpp
         displayapp/screens/WatchFaceSplit.cpp
         displayapp/screens/WatchFaceSector.cpp
+        displayapp/screens/WatchFaceGlance.cpp
+        displayapp/screens/WatchFaceSignal.cpp
         displayapp/screens/WatchFaceInfineat.cpp
         displayapp/screens/WatchFaceTerminal.cpp
         displayapp/screens/WatchFacePineTimeStyle.cpp

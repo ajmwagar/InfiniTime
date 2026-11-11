@@ -62,6 +62,8 @@ namespace Pinetime {
       Meridian,
       Split,
       Sector,
+      Glance,
+      Signal,
     };
 
     template <Apps>

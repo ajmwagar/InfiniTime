@@ -12,6 +12,8 @@
 #include "displayapp/screens/WatchFaceMeridian.h"
 #include "displayapp/screens/WatchFaceSplit.h"
 #include "displayapp/screens/WatchFaceSector.h"
+#include "displayapp/screens/WatchFaceGlance.h"
+#include "displayapp/screens/WatchFaceSignal.h"
 #include "displayapp/screens/WatchFaceAnalog.h"
 #include "displayapp/screens/WatchFaceCasioStyleG7710.h"
 #include "displayapp/screens/WatchFaceInfineat.h"
