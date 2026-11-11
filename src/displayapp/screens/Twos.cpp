@@ -1,11 +1,15 @@
 #include "displayapp/screens/Twos.h"
+#include "components/settings/Settings.h"
+#include "systemtask/SystemTask.h"
 #include <cstdio>
 #include <cstdlib>
 #include <lvgl/lvgl.h>
 
 using namespace Pinetime::Applications::Screens;
 
-Twos::Twos() {
+Twos::Twos(Pinetime::Controllers::Settings& settingsController, Pinetime::System::SystemTask& systemTask)
+  : settingsController {settingsController},
+    systemTask {systemTask} {
 
   struct colorPair {
     lv_color_t bg;
@@ -123,6 +127,9 @@ bool Twos::tryMove(int newRow, int newCol, int oldRow, int oldCol) {
 }
 
 bool Twos::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
+  if (gameOver) {
+    return false;
+  }
   bool validMove = false;
   for (unsigned int i = 0; i < nCells; i++) {
     const unsigned int row = i / nCols;
@@ -152,7 +159,7 @@ bool Twos::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
         }
       }
       if (validMove) {
-        placeNewTile();
+        afterMove();
       }
       return true;
     case TouchEvents::SwipeRight:
@@ -177,7 +184,7 @@ bool Twos::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
         }
       }
       if (validMove) {
-        placeNewTile();
+        afterMove();
       }
       return true;
     case TouchEvents::SwipeUp:
@@ -202,7 +209,7 @@ bool Twos::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
         }
       }
       if (validMove) {
-        placeNewTile();
+        afterMove();
       }
       return true;
     case TouchEvents::SwipeDown:
@@ -227,13 +234,46 @@ bool Twos::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
         }
       }
       if (validMove) {
-        placeNewTile();
+        afterMove();
       }
       return true;
     default:
       return false;
   }
   return false;
+}
+
+void Twos::afterMove() {
+  placeNewTile();
+  if (isGameOver()) {
+    OnGameOver();
+  }
+}
+
+bool Twos::isGameOver() const {
+  for (unsigned int row = 0; row < nRows; row++) {
+    for (unsigned int col = 0; col < nCols; col++) {
+      if (grid[row][col].value == 0) {
+        return false;
+      }
+      if (col + 1 < nCols && grid[row][col].value == grid[row][col + 1].value) {
+        return false;
+      }
+      if (row + 1 < nRows && grid[row][col].value == grid[row + 1][col].value) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+void Twos::OnGameOver() {
+  gameOver = true;
+  if (score > settingsController.GetTwosHighScore()) {
+    settingsController.SetTwosHighScore(score);
+    settingsController.SaveSettings();
+    systemTask.nimble().gameScore().NotifyHighScore(score);
+  }
 }
 
 void Twos::updateGridDisplay() {

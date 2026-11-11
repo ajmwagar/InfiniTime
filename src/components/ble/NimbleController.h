@@ -21,6 +21,7 @@
 #include "components/ble/NavigationService.h"
 #include "components/ble/ServiceDiscovery.h"
 #include "components/ble/MotionService.h"
+#include "components/ble/GameScoreService.h"
 #include "components/ble/SimpleWeatherService.h"
 #include "components/fs/FS.h"
 
@@ -37,6 +38,7 @@ namespace Pinetime {
     class Ble;
     class DateTime;
     class NotificationManager;
+    class Settings;
 
     class NimbleController {
 
@@ -49,7 +51,8 @@ namespace Pinetime {
                        Pinetime::Drivers::SpiNorFlash& spiNorFlash,
                        HeartRateController& heartRateController,
                        MotionController& motionController,
-                       FS& fs);
+                       FS& fs,
+                       Settings& settingsController);
       void Init();
       void StartAdvertising();
       int OnGAPEvent(ble_gap_event* event);
@@ -69,6 +72,10 @@ namespace Pinetime {
 
       Pinetime::Controllers::SimpleWeatherService& weather() {
         return weatherService;
+      };
+
+      Pinetime::Controllers::GameScoreService& gameScore() {
+        return gameScoreService;
       };
 
       uint16_t connHandle();
@@ -105,6 +112,7 @@ namespace Pinetime {
       ImmediateAlertService immediateAlertService;
       HeartRateService heartRateService;
       MotionService motionService;
+      GameScoreService gameScoreService;
       FSService fsService;
       ServiceDiscovery serviceDiscovery;
 
