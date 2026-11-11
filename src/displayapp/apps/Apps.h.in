@@ -58,6 +58,8 @@ namespace Pinetime {
       Numerals,
       PrideFlag,
       Legend,
+      // Appended, not inserted: the stored setting is the enum value.
+      Jarvis,
     };
 
     template <Apps>
