@@ -351,6 +351,17 @@ namespace Pinetime {
         settings.heartRateBackgroundPeriod = newIntervalInSeconds.value();
       }
 
+      uint32_t GetTwosHighScore() const {
+        return settings.twosHighScore;
+      }
+
+      void SetTwosHighScore(uint32_t score) {
+        if (score != settings.twosHighScore) {
+          settings.twosHighScore = score;
+          settingsChanged = true;
+        }
+      }
+
     private:
       Pinetime::Controllers::FS& fs;
 
@@ -383,6 +394,8 @@ namespace Pinetime {
 
         bool dfuAndFsEnabledOnBoot = false;
         uint16_t heartRateBackgroundPeriod = std::numeric_limits<uint16_t>::max(); // Disabled by default
+        // Appended after settingsVersion 0x000a: old settings files leave this at 0.
+        uint32_t twosHighScore = 0;
       };
 
       SettingsData settings;
