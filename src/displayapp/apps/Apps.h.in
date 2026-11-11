@@ -58,6 +58,10 @@ namespace Pinetime {
       Numerals,
       PrideFlag,
       Legend,
+      // Appended in order; the stored setting is the enum value.
+      Meridian,
+      Split,
+      Sector,
     };
 
     template <Apps>
